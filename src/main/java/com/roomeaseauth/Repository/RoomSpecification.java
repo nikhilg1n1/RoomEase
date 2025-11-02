@@ -18,7 +18,7 @@ public class RoomSpecification {
 
 
                 if(roomFilterDto.getRoomType() != null && !roomFilterDto.getRoomType().isEmpty()){
-                    predicates.add(criteriaBuilder.equal(root.get("roomType"),roomFilterDto.getRoomType()));
+                    predicates.add(root.get("roomType").get("typeName").in(roomFilterDto.getRoomType()));
                 }
 
                 if(roomFilterDto.getMinRent() != null){
@@ -31,7 +31,7 @@ public class RoomSpecification {
 
                 if(roomFilterDto.getOccupacyType() != null && !roomFilterDto.getOccupacyType().isEmpty()){
                     Join<Object ,Object> occJoin = root.join("occupacyType");
-                    predicates.add(criteriaBuilder.equal(occJoin.get("occupacy"),roomFilterDto.getOccupacyType()));
+                    predicates.add(occJoin.get("occupacy").get("occupacy").in(roomFilterDto.getOccupacyType()));
                 }
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

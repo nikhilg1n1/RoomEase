@@ -36,8 +36,23 @@ public class RentRoomService {
 
     }
 
-    public List<ListRooms> filter(RoomFilterDto roomFilterDto){
-        return listRoomRepo.findAll(RoomSpecification.apply(roomFilterDto));
+    public List<RoomCardDto> filter(RoomFilterDto roomFilterDto){
+
+        List<ListRooms> rooms = listRoomRepo.findAll(RoomSpecification.apply(roomFilterDto));
+
+        return rooms.stream().map(room ->
+                new RoomCardDto(
+                        room.getRoomId(),
+                        room.getTitle(),
+                        room.getRent(),
+                        room.getCity(),
+                        room.getRoomImages().isEmpty() ?
+                                null : room.getRoomImages().get(0).getId()
+
+                )
+
+
+        ).toList();
     }
 
 

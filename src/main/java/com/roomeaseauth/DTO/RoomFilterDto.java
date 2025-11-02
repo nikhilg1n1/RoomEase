@@ -17,6 +17,7 @@ public class RoomFilterDto {
 
 
 
+
     public RoomFilterDto( List<String> roomType, String minRent, String maxRent, List<String> occupacy) {
         this.roomType = roomType;
         this.minRent = minRent;

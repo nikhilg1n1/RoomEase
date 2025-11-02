@@ -60,10 +60,10 @@ public class ListRooms {
     @JoinColumn(name = "furnishing_id")
     private Furnishing furnishingType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private OccupacyType occupacyType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "room_type_id")
     private RoomType roomType;
 
