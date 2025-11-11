@@ -1,6 +1,7 @@
 package com.roomeaseauth.Entity;
 
 import jakarta.persistence.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 public class RoomType {
@@ -16,6 +17,18 @@ public class RoomType {
 
     private String oneBHK;
 
+    @OneToOne
+    @JoinColumn(name = "list_rooms_room_id")
+    @JsonIgnore
+    private ListRooms listRooms;
+
+    public ListRooms getListRooms() {
+        return listRooms;
+    }
+
+    public void setListRooms(ListRooms listRooms) {
+        this.listRooms = listRooms;
+    }
 
 
 //    public RoomType(Long id, String typeName,String single, String shared, String oneBHK) {

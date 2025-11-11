@@ -97,7 +97,7 @@ public class RoomController {
 
 
     @PostMapping("/filter")
-    public List<ListRooms> filterRooms(@RequestBody RoomFilterDto roomFilterDto) {
+    public List<RoomCardDto> filterRooms(@RequestBody RoomFilterDto roomFilterDto) {
         return rentRoomService.filter(roomFilterDto);
     }
 

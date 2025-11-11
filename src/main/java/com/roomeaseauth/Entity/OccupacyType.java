@@ -1,9 +1,7 @@
 package com.roomeaseauth.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 public class OccupacyType {
@@ -18,6 +16,19 @@ public class OccupacyType {
     private String girls;
 
     private String family;
+
+    @OneToOne
+    @JoinColumn(name = "list_rooms_room_id")
+    @JsonIgnore
+    private ListRooms listRooms;
+
+    public ListRooms getListRooms() {
+        return listRooms;
+    }
+
+    public void setListRooms(ListRooms listRooms) {
+        this.listRooms = listRooms;
+    }
 
     public OccupacyType(String occupacy) {
         this.occupacy = occupacy;
