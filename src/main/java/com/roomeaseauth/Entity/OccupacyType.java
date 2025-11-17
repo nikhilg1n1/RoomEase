@@ -8,17 +8,10 @@ public class OccupacyType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String boys;
-
     private String occupacy;
 
-    private String girls;
-
-    private String family;
-
     @OneToOne
-    @JoinColumn(name = "list_rooms_room_id")
+    @JoinColumn(name = "list_room_room_id")
     @JsonIgnore
     private ListRooms listRooms;
 
@@ -46,13 +39,6 @@ public class OccupacyType {
         this.id = id;
     }
 
-    public String getBoys() {
-        return boys;
-    }
-
-    public void setBoys(String boys) {
-        this.boys = boys;
-    }
 
     public String getOccupacy() {
         return occupacy;
@@ -62,19 +48,5 @@ public class OccupacyType {
         this.occupacy = occupacy;
     }
 
-    public String getGirls() {
-        return girls;
-    }
 
-    public void setGirls(String girls) {
-        this.girls = girls;
-    }
-
-    public String getFamily() {
-        return family;
-    }
-
-    public void setFamily(String family) {
-        this.family = family;
-    }
 }

@@ -24,6 +24,8 @@ public class ListRooms {
 
     private String title;
 
+    private String name;
+
     private String description;
 
     private int rent;
@@ -60,10 +62,10 @@ public class ListRooms {
     @JoinColumn(name = "furnishing_id")
     private Furnishing furnishingType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private OccupacyType occupacyType;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_type_id")
     private RoomType roomType;
 
@@ -75,7 +77,7 @@ public class ListRooms {
     )
     private Amenities amenities;
 
-    public ListRooms(Long roomId, String title, String description, int rent, int securityDeposit, int beds, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImage> roomImages, Furnishing furnishingType, OccupacyType occupacyType, Amenities amenities) {
+    public ListRooms(Long roomId, String title, String description, int rent, int securityDeposit, int beds, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImage> roomImages, Furnishing furnishingType, OccupacyType occupacyType, Amenities amenities , String name) {
         this.roomId = roomId;
         this.title = title;
         this.description = description;
@@ -94,9 +96,18 @@ public class ListRooms {
         this.furnishingType = furnishingType;
         this.occupacyType = occupacyType;
         this.amenities = amenities;
+        this.name = name;
     }
 
     public ListRooms() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getRoomId() {

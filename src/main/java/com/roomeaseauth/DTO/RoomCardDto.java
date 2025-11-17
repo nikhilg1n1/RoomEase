@@ -63,4 +63,5 @@ public class RoomCardDto {
     public void setImageId(Long imageId) {
         this.imageId = imageId;
     }
+
 }

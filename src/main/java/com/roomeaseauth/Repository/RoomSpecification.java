@@ -29,9 +29,13 @@ public class RoomSpecification {
                     predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("rent"),roomFilterDto.getMaxRent()));
                 }
 
-                if(roomFilterDto.getOccupacyType() != null && !roomFilterDto.getOccupacyType().isEmpty()){
+                if(roomFilterDto.getOccupacy() != null && !roomFilterDto.getOccupacy().isEmpty()){
+                    System.out.println("Filter Occupacy: " + roomFilterDto.getOccupacy());
                     Join<Object ,Object> occJoin = root.join("occupacyType");
-                    predicates.add(occJoin.get("occupacy").get("occupacy").in(roomFilterDto.getOccupacyType()));
+                    predicates.add(occJoin.get("occupacy")
+                            .in(roomFilterDto.getOccupacy()));
+                }else {
+                    System.out.println("Room Occupacy is:" + roomFilterDto.getOccupacy());
                 }
 
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

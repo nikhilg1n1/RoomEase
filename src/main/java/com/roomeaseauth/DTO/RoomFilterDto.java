@@ -13,7 +13,7 @@ public class RoomFilterDto {
 
     private String maxRent;
 
-    private List<String> occupacyType;
+    private List<String> occupacy;
 
 
 
@@ -22,7 +22,7 @@ public class RoomFilterDto {
         this.roomType = roomType;
         this.minRent = minRent;
         this.maxRent = maxRent;
-        this.occupacyType = occupacy;
+        this.occupacy = occupacy;
     }
 
     public RoomFilterDto() {
@@ -37,12 +37,12 @@ public class RoomFilterDto {
         this.roomType = roomType;
     }
 
-    public List<String> getOccupacyType() {
-        return occupacyType;
+    public List<String> getOccupacy() {
+        return occupacy;
     }
 
-    public void setOccupacyType(List<String> occupacyType) {
-        this.occupacyType = occupacyType;
+    public void setOccupacy(List<String> occupacy) {
+        this.occupacy = occupacy;
     }
 
     public String getMinRent() {
