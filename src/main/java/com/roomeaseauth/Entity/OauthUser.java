@@ -1,32 +1,38 @@
 package com.roomeaseauth.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 
-public class UserInfo {
+public class OauthUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String sub;
+    private String name;
     @Column(name ="Email_address")
     private String email;
-
-    private String password;
-
     private String picture;
 
-    public UserInfo(Long id, String email, String password, String picture) {
-        this.id = id;
+    public OauthUser(String sub  ,String name, String email, String picture) {
+        this.sub = sub;
+        this.name = name;
         this.email = email;
-        this.password = password;
         this.picture = picture;
     }
 
-    public UserInfo() {
+    public OauthUser() {
+
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -34,9 +40,6 @@ public class UserInfo {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;
@@ -46,19 +49,23 @@ public class UserInfo {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getPicture() {
         return picture;
     }
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSub() {
+        return sub;
+    }
+
+    public void setSub(String sub) {
+        this.sub = sub;
     }
 }

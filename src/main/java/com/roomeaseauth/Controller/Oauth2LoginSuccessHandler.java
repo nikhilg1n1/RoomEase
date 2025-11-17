@@ -1,6 +1,8 @@
 package com.roomeaseauth.Controller;
 
 import com.roomeaseauth.Config.RedisConfig;
+import com.roomeaseauth.DTO.UserDataCache;
+import com.roomeaseauth.Services.CachedUserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,9 +17,14 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final RedisTemplate<String ,Object> template;
+    private final CachedUserService cachedUserService;
+
+    public Oauth2LoginSuccessHandler(RedisTemplate<String, Object> template, CachedUserService cachedUserService) {
+        this.template = template;
+        this.cachedUserService = cachedUserService;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -31,6 +38,9 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String name = (String) oAuth2User.getAttributes().get("name");
         String picture = (String) oAuth2User.getAttributes().get("picture");
 
+        UserDataCache userDataCache = new UserDataCache(id,name,email,picture);
+        cachedUserService.saveUser(userDataCache);
+//        response.sendRedirect("localhost:5173/");
 
       }
 

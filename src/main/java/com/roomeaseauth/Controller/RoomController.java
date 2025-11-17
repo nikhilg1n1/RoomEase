@@ -1,7 +1,6 @@
 package com.roomeaseauth.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.roomeaseauth.DTO.ListRoomsDto;
 import com.roomeaseauth.DTO.RoomCardDto;
 import com.roomeaseauth.DTO.RoomFilterDto;
 import com.roomeaseauth.Entity.ListRooms;
@@ -98,6 +97,10 @@ public class RoomController {
 
     @PostMapping("/filter")
     public List<RoomCardDto> filterRooms(@RequestBody RoomFilterDto roomFilterDto) {
+        System.out.println("Room Ocuupacy in Controller :" + roomFilterDto.getOccupacy());
+        System.out.println("Room Minimum Rent is:" + roomFilterDto.getMinRent());
+        System.out.println("Room Maximum Rent is:" + roomFilterDto.getMaxRent());
+        System.out.println("Room type is:" + roomFilterDto.getRoomType());
         return rentRoomService.filter(roomFilterDto);
     }
 
