@@ -37,37 +37,46 @@ public class ListRoomService {
         System.out.println(listRooms);
         listRoomRepo.save(listRooms);
     }
-    public List<ListRoomsDto> getAllRooms(){
-        List<ListRooms> rooms = listRoomRepo.findAll();
+//    public List<ListRoomsDto> getAllRooms(){
+//        List<ListRooms> rooms = listRoomRepo.findAll();
+//
+//        return rooms.stream().map(
+//                room -> new ListRoomsDto(
+//                        room.getRoomId(),
+//                        room.getTitle(),
+//                        room.getDescription(),
+//                        room.getRent(),
+//                        room.getSecurityDeposit(),
+//                        room.getBeds(),
+//                        room.isAttachedWashroom(),
+//                        room.isBalcony(),
+//                        room.getAddress(),
+//                        room.getCity(),
+//                        room.getLandmark(),
+//                        room.getPhoneNumber(),
+//                        room.getAlternateNumber(),
+//                        room.getEmail(),
+//                        room.getAvailableDate(),
+//                        room.getRoomImages(),
+//                        room.getFurnishingType(),
+//                        room.getOccupacyType(),
+//                        room.getRoomType(),
+//                        room.getAmenities()
+//
+//                )
+//        ).toList();
+//    }
 
-        return rooms.stream().map(
-                room -> new ListRoomsDto(
-                        room.getRoomId(),
-                        room.getTitle(),
-                        room.getDescription(),
-                        room.getRent(),
-                        room.getSecurityDeposit(),
-                        room.getBeds(),
-                        room.isAttachedWashroom(),
-                        room.isBalcony(),
-                        room.getAddress(),
-                        room.getCity(),
-                        room.getLandmark(),
-                        room.getPhoneNumber(),
-                        room.getAlternateNumber(),
-                        room.getEmail(),
-                        room.getAvailableDate(),
-                        room.getRoomImages(),
-                        room.getFurnishingType(),
-                        room.getOccupacyType(),
-                        room.getRoomType(),
-                        room.getAmenities()
-
-                )
-        ).toList();
+    public List<ListRoomsDto> getAllRooms() {
+        return listRoomRepo.findAll()
+                .stream()
+                .map(mapper::toDto)   // Use MapStruct
+                .toList();
     }
 
+
     public ListRoomsDto getRoomDescription(Long id){
+        System.out.println("In ListRoomService returning room description ");
         return listRoomRepo.findById(id)
                 .map(mapper::toDto)
                 .orElse(null);

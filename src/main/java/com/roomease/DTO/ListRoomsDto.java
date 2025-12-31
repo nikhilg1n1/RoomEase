@@ -14,9 +14,6 @@ import java.util.List;
 /**
  * DTO for {@link com.roomease.Entity.ListRooms}
  */
-@Data
-@Builder
-@NoArgsConstructor
 public class ListRoomsDto implements Serializable {
     Long roomId;
     String title;
@@ -33,13 +30,13 @@ public class ListRoomsDto implements Serializable {
     String alternateNumber;
     String email;
     LocalDate availableDate;
-    List<RoomImage> roomImages;
-    Furnishing furnishingType;
-    OccupacyType occupacyType;
-    RoomType roomType;
-    Amenities amenities;
+    List<RoomImageDto> roomImages;
+    FurnishingDto furnishingType;
+    OccupacyTypeDto occupacyType;
+    RoomTypeDto roomType;
+    AmenitiesDto amenities;
 
-    public ListRoomsDto(Long roomId, String title, String description, int rent, int securityDeposit, int beds, boolean attachedWashroom, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImage> roomImages, Furnishing furnishingType, OccupacyType occupacyType, RoomType roomType, Amenities amenities) {
+    public ListRoomsDto(Long roomId, String title, String description, int rent, int securityDeposit, int beds, boolean attachedWashroom, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImageDto> roomImages, FurnishingDto furnishingType, OccupacyTypeDto occupacyType, RoomTypeDto roomType, AmenitiesDto amenities) {
         this.roomId = roomId;
         this.title = title;
         this.description = description;
@@ -60,6 +57,9 @@ public class ListRoomsDto implements Serializable {
         this.occupacyType = occupacyType;
         this.roomType = roomType;
         this.amenities = amenities;
+    }
+
+    public ListRoomsDto() {
     }
 
 
@@ -183,43 +183,43 @@ public class ListRoomsDto implements Serializable {
         this.availableDate = availableDate;
     }
 
-    public List<RoomImage> getRoomImages() {
+    public List<RoomImageDto> getRoomImages() {
         return roomImages;
     }
 
-    public void setRoomImages(List<RoomImage> roomImages) {
+    public void setRoomImages(List<RoomImageDto> roomImages) {
         this.roomImages = roomImages;
     }
 
-    public Furnishing getFurnishingType() {
+    public FurnishingDto getFurnishingType() {
         return furnishingType;
     }
 
-    public void setFurnishingType(Furnishing furnishingType) {
+    public void setFurnishingType(FurnishingDto furnishingType) {
         this.furnishingType = furnishingType;
     }
 
-    public OccupacyType getOccupacyType() {
+    public OccupacyTypeDto getOccupacyType() {
         return occupacyType;
     }
 
-    public void setOccupacyType(OccupacyType occupacyType) {
+    public void setOccupacyType(OccupacyTypeDto occupacyType) {
         this.occupacyType = occupacyType;
     }
 
-    public RoomType getRoomType() {
+    public RoomTypeDto getRoomType() {
         return roomType;
     }
 
-    public void setRoomType(RoomType roomType) {
+    public void setRoomType(RoomTypeDto roomType) {
         this.roomType = roomType;
     }
 
-    public Amenities getAmenities() {
+    public AmenitiesDto getAmenities() {
         return amenities;
     }
 
-    public void setAmenities(Amenities amenities) {
+    public void setAmenities(AmenitiesDto amenities) {
         this.amenities = amenities;
     }
 }

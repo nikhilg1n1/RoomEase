@@ -1,5 +1,6 @@
 package com.roomease.Auth;
 
+import com.roomease.Entity.OauthUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -15,6 +16,8 @@ public class JwtUtils {
     @Value("${secret}")
     private String secret;
 
+
+
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     private  Key key;
 
@@ -23,18 +26,20 @@ public class JwtUtils {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public  String generateAccessToken(String email){
+    public  String generateAccessToken(OauthUser user){
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
+                .claim("role",user.getUserRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis()+1000 *60 *15))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public  String generateRefreshToken(String email){
+    public  String generateRefreshToken(OauthUser user){
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
+                .claim("role",user.getUserRole())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000L *60*60*24*30))
                 .signWith(key,SignatureAlgorithm.HS256)

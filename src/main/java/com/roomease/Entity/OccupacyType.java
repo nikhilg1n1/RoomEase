@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id"
+//)
 public class OccupacyType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +19,7 @@ public class OccupacyType {
 
     @OneToOne
     @JoinColumn(name = "list_room_room_id")
-    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonIdentityReference(alwaysAsId = true)
     private ListRooms listRooms;
 
     public ListRooms getListRooms() {

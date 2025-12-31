@@ -1,6 +1,10 @@
 package com.roomease.DTO;
 
-public class RoomCardDto {
+import com.roomease.Entity.ListRooms;
+
+import java.io.Serializable;
+
+public class RoomCardDto implements Serializable {
     private Long roomId;
 
     private String title;
@@ -12,12 +16,16 @@ public class RoomCardDto {
     private Long imageId;
 
 
+
     public RoomCardDto(Long roomId, String title, int rent, String city, Long imageId) {
         this.roomId = roomId;
         this.title = title;
         this.rent = rent;
         this.city = city;
         this.imageId = imageId;
+    }
+
+    public RoomCardDto() {
     }
 
     public RoomCardDto(Long imageId) {

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id"
+//)
 public class RoomImage {
     public RoomImage(String filename, String contentType, byte[] roomImage) {
         this.filename = filename;
@@ -29,7 +29,7 @@ public class RoomImage {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] roomImage;
 
-    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     private ListRooms listRooms;
 

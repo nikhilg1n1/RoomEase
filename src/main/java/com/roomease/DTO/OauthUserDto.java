@@ -7,7 +7,6 @@ import java.io.Serializable;
 /**
  * DTO for {@link com.roomease.Entity.OauthUser}
  */
-@Value
 public class OauthUserDto implements Serializable {
     String id;
     String name;
@@ -19,6 +18,9 @@ public class OauthUserDto implements Serializable {
         this.name = name;
         this.email = email;
         this.picture = picture;
+    }
+
+    public OauthUserDto() {
     }
 
 

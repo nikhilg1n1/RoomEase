@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -31,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/","/error","/v1/users/auth/refresh","/v1/image/{id}").permitAll()
+                        .requestMatchers("/login","/","/error","/v1/users/auth/refresh","/v1/image/{id}","/v1/users/sendOtp","/v1/users/auth/verifyOtp","/v1/users/login").permitAll()
                          .anyRequest().authenticated()
 
                 )
@@ -91,6 +93,10 @@ public class SecurityConfig {
 
             }
         };
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return  new BCryptPasswordEncoder();
     }
 
 }

@@ -1,6 +1,6 @@
-package com.roomeaseauth.Repository;
+package com.roomease.Repository;
 
-import com.roomeaseauth.Entity.OccupacyType;
+import com.roomease.Entity.OccupacyType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

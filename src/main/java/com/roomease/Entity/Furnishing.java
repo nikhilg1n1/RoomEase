@@ -20,6 +20,13 @@ public class Furnishing {
     private String furnishedType;
     private String semiFurnished;
     private String unFurnished;
+    @ManyToOne
+    @JoinColumn(name = "list_rooms_room_id")
+    private ListRooms listRooms;
+
+    public void setListRooms(ListRooms listRooms) {
+        this.listRooms = listRooms;
+    }
 
 
     public Furnishing(String furnishedType) {

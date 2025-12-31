@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id"
-)
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id"
+//)
 public class Amenities {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
@@ -37,7 +37,7 @@ public class Amenities {
 
     private String houseKeeping;
 
-    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonIdentityReference(alwaysAsId = true)
     @OneToOne(mappedBy = "amenities")
     private ListRooms listRooms;
 

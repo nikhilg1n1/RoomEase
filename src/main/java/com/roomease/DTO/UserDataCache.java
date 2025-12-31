@@ -6,20 +6,8 @@ import java.io.Serializable;
 
 @Data
 public class UserDataCache implements Serializable {
-    private  String id;
-    private String name;
-    private String email;
-    private String picture;
 
-    public UserDataCache() {
-    }
-
-    public UserDataCache(String id, String name, String email, String picture) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.picture = picture;
-    }
+    private String id;
 
     public String getId() {
         return id;
@@ -28,6 +16,65 @@ public class UserDataCache implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getSub() {
+        return sub;
+    }
+
+    public void setSub(String sub) {
+        this.sub = sub;
+    }
+
+    private  String sub;
+    private String name;
+    private String email;
+    private String picture;
+    private String provider;
+    private String password;
+
+
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private String role;
+
+    public UserDataCache() {
+    }
+
+    public UserDataCache(String id, String name, String email, String picture,String provider,String password,String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.provider=provider;
+        this.password=password;
+        this.role=role;
+
+    }
+
+
 
     public String getName() {
         return name;

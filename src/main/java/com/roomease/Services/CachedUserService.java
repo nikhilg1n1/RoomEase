@@ -28,8 +28,8 @@ public class CachedUserService {
     }
 
 //    @CacheEvict(value = "oauthusers", key = "#id")
-    public  void removeUser(String id){
-        redisTemplate.delete(id);
+    public  void removeUser(String email){
+        redisTemplate.delete(email);
         System.out.println("Removing user from Redis Cache ...");
     }
 }

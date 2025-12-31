@@ -26,8 +26,11 @@ public class UserService {
                             oauthUser.getSub(),
                             oauthUser.getName(),
                             oauthUser.getEmail(),
-                            oauthUser.getPicture()
-                    ));
+                            oauthUser.getPicture(),
+                            oauthUser.getProvider(),
+                            oauthUser.getPassword(),
+                            oauthUser.getUserRole()
+                            ));
                 });
     }
 

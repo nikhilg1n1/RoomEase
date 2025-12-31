@@ -3,6 +3,8 @@ package com.roomease.Controller;
 import com.roomease.Auth.JwtUtils;
 import com.roomease.DTO.UserDataCache;
 import com.roomease.Entity.OauthUser;
+import com.roomease.Entity.UserRole;
+import com.roomease.Repository.RoleRepo;
 import com.roomease.Services.CachedUserService;
 import com.roomease.Services.UserService;
 import jakarta.servlet.ServletException;
@@ -33,7 +35,7 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private String secret;
 
     private static final Logger logger = getLogger(Oauth2LoginSuccessHandler.class);
-
+    private final RoleRepo roleRepo;
 
     private final JwtUtils jwtUtils;
     private final RedisTemplate<String, Object> template;
@@ -42,7 +44,8 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
 
-    public Oauth2LoginSuccessHandler(JwtUtils jwtUtils, RedisTemplate<String, Object> template, CachedUserService cachedUserService, UserService userService) {
+    public Oauth2LoginSuccessHandler(RoleRepo roleRepo, JwtUtils jwtUtils, RedisTemplate<String, Object> template, CachedUserService cachedUserService, UserService userService) {
+        this.roleRepo = roleRepo;
         this.jwtUtils = jwtUtils;
         this.template = template;
         this.cachedUserService = cachedUserService;
@@ -62,21 +65,25 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String email = (String) oAuth2User.getAttributes().get("email");
         String name = (String) oAuth2User.getAttributes().get("name");
         String picture = (String) oAuth2User.getAttributes().get("picture");
+        String password = "";
+        String provider = (String)oAuth2User.getAttributes().get("provider");
+        UserRole role = roleRepo.findByRole("user").
+                orElseThrow(()-> new RuntimeException("User role is not found"));
 
-        UserDataCache userDataCache = new UserDataCache(id, name, email, picture);
+        UserDataCache userDataCache = new UserDataCache(id, name, email, picture,provider,password,"user");
         cachedUserService.saveUser(userDataCache);
-        OauthUser user = new OauthUser(sub, name, email, picture);
+        OauthUser user = new OauthUser(sub, name, email, picture,provider,password,role);
         userService.saveIfFirstLogin(user);
 
         logger.info("Creating Cookie for user {}",name);
 
 
-        String accessToken = jwtUtils.generateAccessToken(email);
+        String accessToken = jwtUtils.generateAccessToken(user);
 
         logger.info("Access Token is {}", accessToken);
 
 
-        String refreshToken = jwtUtils.generateRefreshToken(email);
+        String refreshToken = jwtUtils.generateRefreshToken(user);
 
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
                 .httpOnly(true)
