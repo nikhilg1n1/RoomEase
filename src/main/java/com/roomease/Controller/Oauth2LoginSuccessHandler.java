@@ -70,7 +70,7 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         UserRole role = roleRepo.findByRole("user").
                 orElseThrow(()-> new RuntimeException("User role is not found"));
 
-        UserDataCache userDataCache = new UserDataCache(id, name, email, picture,provider,password,"user");
+        UserDataCache userDataCache = new UserDataCache(id, name, email, picture,provider,password,role.getRole());
         cachedUserService.saveUser(userDataCache);
         OauthUser user = new OauthUser(sub, name, email, picture,provider,password,role);
         userService.saveIfFirstLogin(user);

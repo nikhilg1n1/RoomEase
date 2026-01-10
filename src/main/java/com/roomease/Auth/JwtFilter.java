@@ -34,21 +34,31 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
             return;
         }
-        String token = header.substring(7);
+        String token = header.substring(7).trim();
+
+        if(!jwtUtils.validatedToken(token)){
+            logger.warn("Invalid or expired JWT token");
+            filterChain.doFilter(request,response);
+            return;
+
+        }
 
         String email = jwtUtils.extractEmail(token);
-        if(email == null){
-            filterChain.doFilter(request,response);
-            return;
-        }
-        UserDataCache user = cachedUserService.getUser(email);
-        if (user == null){
-            filterChain.doFilter(request,response);
-            return;
-        }
+        logger.info("Jwt validated for user : {} " + email);
+//
+//        if(email == null){
+//            filterChain.doFilter(request,response);
+//            return;
+//        }
+//        UserDataCache user = cachedUserService.getUser(email);
+//        logger.info("In Filter and user is : " + user.getName());
+//        if (user == null){
+//            filterChain.doFilter(request,response);
+//            return;
+//        }
          UsernamePasswordAuthenticationToken authentication =
                  new UsernamePasswordAuthenticationToken(
-                         user,
+                         email,
                          null,
                          Collections.emptyList()
 

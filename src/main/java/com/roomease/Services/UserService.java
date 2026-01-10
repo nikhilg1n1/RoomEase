@@ -3,6 +3,8 @@ package com.roomease.Services;
 import com.roomease.Entity.OauthUser;
 import com.roomease.Repository.OauthUserRepo;
 import com.roomease.Repository.UserInfoRepo;
+import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,21 +19,15 @@ public class UserService {
         this.oauthUserRepo = oauthUserRepo;
         this.cachedUserService = cachedUserService;
     }
-
+@Transactional
     public OauthUser saveIfFirstLogin(OauthUser oauthUser) {
-        return oauthUserRepo.findBySub(oauthUser.getSub())
-                .orElseGet(() -> {
-                    System.out.println("Saving first-time Oauth user");
-                    return oauthUserRepo.save(new OauthUser(
-                            oauthUser.getSub(),
-                            oauthUser.getName(),
-                            oauthUser.getEmail(),
-                            oauthUser.getPicture(),
-                            oauthUser.getProvider(),
-                            oauthUser.getPassword(),
-                            oauthUser.getUserRole()
-                            ));
-                });
+        OauthUser user =  oauthUserRepo.findByEmail(oauthUser.getEmail());
+        if(user == null){
+            System.out.println("Saving first-time Oauth user");
+            return oauthUserRepo.save(user);
+        }
+        System.out.println("User already exists in Database");
+        return user;
     }
 
 }

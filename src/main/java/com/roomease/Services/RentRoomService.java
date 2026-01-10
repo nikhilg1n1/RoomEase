@@ -54,5 +54,20 @@ public class RentRoomService {
         ).toList();
     }
 
+    public List<RoomCardDto> searchRooms(String query ){
+        List<ListRooms> searchedRooms = listRoomRepo.searchByCityOrAddress(query);
+
+        return searchedRooms.stream().map(rooms->
+                new RoomCardDto(
+                        rooms.getRoomId(),
+                        rooms.getTitle(),
+                        rooms.getRent(),
+                        rooms.getCity(),
+                        rooms.getRoomImages().isEmpty()?
+                                null : rooms.getRoomImages().get(0).getId()
+                )
+        ).toList();
+    }
+
 
 }

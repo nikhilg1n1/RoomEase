@@ -87,15 +87,16 @@ public class AuthController {
             return ResponseEntity.status(401).body(Map.of("authenticated",false));
         }
 
-        return ResponseEntity.ok(Map.of(
-                "authenticated",true,
-                "sub", user.getId(),
-                "name",user.getName(),
-                "email",user.getEmail(),
-                "picture",user.getPicture(),
-                "role",user.getRole()
+        HashMap<String ,Object> response = new HashMap<>();
+        response.put("authenticated",true);
+        response.put("sub", user.getId());
+        response.put("name",user.getName());
+        response.put("email",user.getEmail());
+        response.put("picture",user.getPicture());
+        response.put("role",user.getRole());
 
-        ));
+        return ResponseEntity.ok(response);
+
     }
 
     @GetMapping("/auth/refresh")
@@ -166,42 +167,48 @@ public class AuthController {
         String email = body.get("email");
         String password = body.get("password");
         String otp = body.get("otp");
+        logger.info("The user email is {}",email);
 
         if (!otpService.verifyOtp(email, otp)) {
             return ResponseEntity.status(401).body("Invalid or expired OTP");
         }
 
         // Fetch or create user
+//        logger.info("Verify and storing user in db -> " +
+
         OauthUser user = oauthUserRepo.findByEmail(email);
-        if(user == null){
+        if(user == null) {
+
             user = new OauthUser();
             user.setEmail(email);
             user.setProvider("Local");
             user.setVerified(true);
             user.setPassword(passwordEncoder.encode(password));
             UserRole role = roleRepo.findByRole("user").
-                    orElseThrow(()-> new RuntimeException("User role is not found"));
+                    orElseThrow(() -> new RuntimeException("User role is not found"));
             user.setUserRole(role);
-            userService.saveIfFirstLogin(user);
+            UserDataCache userDataCache = new UserDataCache(user.getEmail(),user.getUserRole().getRole(), user.getProvider(),user.getPicture());
+            cachedUserService.saveUser(userDataCache);
+            oauthUserRepo.save(user);
             logger.info("Normal user saved in DB");
-
         }
 
-//        String token = jwtUtils.generateAccessToken(user);
 
-//        return ResponseEntity.ok(Map.of(
-//                "access_token", token,
-//                "user", user
-//        ));
-        return ResponseEntity.ok("Email verified successfully");
+        String token = jwtUtils.generateAccessToken(user);
+
+        return ResponseEntity.ok(Map.of(
+                "access_token", token,
+                "user", user
+        ));
+//        return ResponseEntity.ok("Email verified successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<?>loginUser(@RequestBody Map<String,String> body,HttpServletResponse response){
         String email = body.get("email");
         String password = body.get("password");
-        UserDataCache userDataCache = cachedUserService.getUser(email);
         OauthUser user = oauthUserRepo.findByEmail(email);
+
         if (user == null || !passwordEncoder.matches(password,user.getPassword())){
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
@@ -210,6 +217,9 @@ public class AuthController {
 
         String accessToken = jwtUtils.generateAccessToken(user);
         String refreshToken = jwtUtils.generateRefreshToken(user);
+
+        UserDataCache userDataCache = new UserDataCache(user.getEmail(),user.getUserRole().getRole(), user.getProvider(),user.getPicture());
+        cachedUserService.saveUser(userDataCache);
 
         ResponseCookie cookie = ResponseCookie.from("refresh_token",refreshToken)
                 .httpOnly(true)
@@ -224,12 +234,30 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
                 .body(Map.of(
                         "authenticated",true,
-                        "access_token",accessToken,
-                        "user",user
+//                        "access_token",accessToken,
+                        "user",userDataCache,
+                        "email",user.getEmail()
                         ));
 
     }
+    @PostMapping("/forgotpass")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String , String> body){
+        String email = body.get("email");
+        String password = body.get("password");
 
+        OauthUser user = oauthUserRepo.findByEmail(email);
+
+        if(user != null){
+            
+            user.setPassword(passwordEncoder.encode(password));
+            oauthUserRepo.save(user);
+            return ResponseEntity.ok().body("password changed successfully");
+        }else {
+            return ResponseEntity.status(401).body("User password is not changed");
+        }
+
+
+    }
 
 
 }

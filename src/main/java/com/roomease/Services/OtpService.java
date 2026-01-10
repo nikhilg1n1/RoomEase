@@ -1,5 +1,8 @@
 package com.roomease.Services;
 
+import com.roomease.Controller.AuthController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class OtpService {
+    private final static Logger logger = LoggerFactory.getLogger(OtpService.class);
+
     private  final RedisTemplate<String , String> redisTemplate;
     private final SecureRandom random = new SecureRandom();
 
@@ -31,6 +36,8 @@ public class OtpService {
     public boolean verifyOtp(String email , String otp){
         String key = "otp :"+email;
         String storedOtp = redisTemplate.opsForValue().get(key);
+
+        logger.info("Stored Otp is ->" + storedOtp);
 
         if(storedOtp.equals(otp)){
             redisTemplate.delete(key);
