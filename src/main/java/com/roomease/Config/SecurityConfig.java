@@ -33,7 +33,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/","/error","/v1/users/auth/refresh","/v1/image/{id}","/v1/users/sendOtp","/v1/users/auth/verifyOtp","/v1/users/login").permitAll()
+                        .requestMatchers("/login",
+                                "/",
+                                "/error",
+                                "/v1/users/auth/refresh",
+                                "/v1/image/{id}",
+                                "/v1/users/sendOtp",
+                                "/v1/users/auth/verifyOtp",
+                                "/v1/users/login",
+                                "/v1/users/forgotpass"
+                        ).permitAll()
                          .anyRequest().authenticated()
 
                 )

@@ -60,21 +60,6 @@ public class UserDataCache implements Serializable {
 
     private String role;
 
-    public UserDataCache() {
-    }
-
-    public UserDataCache(String id, String name, String email, String picture,String provider,String password,String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.picture = picture;
-        this.provider=provider;
-        this.password=password;
-        this.role=role;
-
-    }
-
-
 
     public String getName() {
         return name;
@@ -99,4 +84,28 @@ public class UserDataCache implements Serializable {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
+    public UserDataCache() {
+    }
+
+    public UserDataCache(String id, String name, String email, String picture,String provider,String password,String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.provider=provider;
+        this.password=password;
+        this.role=role;
+
+    }
+
+    public UserDataCache(String email , String role, String provider,String picture){
+        this.email=email;
+        this.role=role;
+        this.provider=provider;
+        this.picture=picture;
+    }
+
+
+
 }

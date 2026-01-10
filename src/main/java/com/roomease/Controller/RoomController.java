@@ -122,6 +122,10 @@ public class RoomController {
         return ResponseEntity.ok(room);
     }
 
+    @GetMapping("/searchRooms")
+    public List<RoomCardDto> searchRoomsByQuery(@RequestParam String query){
+        return rentRoomService.searchRooms(query);
+    }
 
 }
 

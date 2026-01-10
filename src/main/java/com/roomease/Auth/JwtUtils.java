@@ -36,6 +36,21 @@ public class JwtUtils {
                 .compact();
     }
 
+    public boolean validatedToken(String token){
+        try{
+            Jwts.parser()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        }catch (Exception e){
+            logger.info("Error is occurred here ");
+            logger.error("Validated token is failing "+e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+
+    }
     public  String generateRefreshToken(OauthUser user){
         return Jwts.builder()
                 .subject(user.getEmail())
