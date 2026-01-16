@@ -9,7 +9,7 @@ public class RoomCardDto implements Serializable {
 
     private String title;
 
-    private int rent;
+    private Double rent;
 
     private String city;
 
@@ -17,7 +17,7 @@ public class RoomCardDto implements Serializable {
 
 
 
-    public RoomCardDto(Long roomId, String title, int rent, String city, Long imageId) {
+    public RoomCardDto(Long roomId, String title, Double rent, String city, Long imageId) {
         this.roomId = roomId;
         this.title = title;
         this.rent = rent;
@@ -48,11 +48,11 @@ public class RoomCardDto implements Serializable {
         this.title = title;
     }
 
-    public int getRent() {
+    public Double getRent() {
         return rent;
     }
 
-    public void setRent(int rent) {
+    public void setRent(Double rent) {
         this.rent = rent;
     }
 

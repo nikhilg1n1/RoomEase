@@ -15,10 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
 @RestController
@@ -125,6 +127,11 @@ public class RoomController {
     @GetMapping("/searchRooms")
     public List<RoomCardDto> searchRoomsByQuery(@RequestParam String query){
         return rentRoomService.searchRooms(query);
+    }
+
+    @PostMapping("/bookings")
+    public ResponseEntity<?> createBooking(@RequestBody Map<String , String> body, Authentication auth){
+        return ResponseEntity.ok().body("Ok hai ji");
     }
 
 }
