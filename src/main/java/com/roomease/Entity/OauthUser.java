@@ -3,6 +3,8 @@ package com.roomease.Entity;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Entity
 
 public class OauthUser {
@@ -25,6 +27,8 @@ public class OauthUser {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_role_id")
     private UserRole userRole;
+    @OneToMany(mappedBy = "oauthUser",cascade = CascadeType.ALL)
+    private List<Booking> booking;
 
     public OauthUser(Long id, String sub, String name, String email, String picture, String provider, String password, boolean verified, UserRole userRole) {
         this.id = id;

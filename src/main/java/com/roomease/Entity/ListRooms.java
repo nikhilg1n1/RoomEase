@@ -28,9 +28,9 @@ public class ListRooms {
 
     private String description;
 
-    private int rent;
+    private Double rent;
 
-    private int securityDeposit;
+    private Double securityDeposit;
 
     private int beds;
 
@@ -83,7 +83,10 @@ public class ListRooms {
     )
     private Amenities amenities;
 
-    public ListRooms(Long roomId, String title, String description, int rent, int securityDeposit, int beds, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImage> roomImages, Furnishing furnishingType, OccupacyType occupacyType, Amenities amenities , String name) {
+    @OneToMany(mappedBy = "listRooms" ,cascade = CascadeType.ALL)
+    private List<Booking> booking;
+
+    public ListRooms(Long roomId, String title, String description,Double rent, Double securityDeposit, int beds, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImage> roomImages, Furnishing furnishingType, OccupacyType occupacyType, Amenities amenities , String name) {
         this.roomId = roomId;
         this.title = title;
         this.description = description;
@@ -140,19 +143,19 @@ public class ListRooms {
         this.description = description;
     }
 
-    public int getRent() {
+    public Double getRent() {
         return rent;
     }
 
-    public void setRent(int rent) {
+    public void setRent(Double rent) {
         this.rent = rent;
     }
 
-    public int getSecurityDeposit() {
+    public Double getSecurityDeposit() {
         return securityDeposit;
     }
 
-    public void setSecurityDeposit(int securityDeposit) {
+    public void setSecurityDeposit(Double securityDeposit) {
         this.securityDeposit = securityDeposit;
     }
 

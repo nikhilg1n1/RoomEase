@@ -18,8 +18,8 @@ public class ListRoomsDto implements Serializable {
     Long roomId;
     String title;
     String description;
-    int rent;
-    int securityDeposit;
+    Double rent;
+    Double securityDeposit;
     int beds;
     boolean attachedWashroom;
     boolean balcony;
@@ -36,7 +36,7 @@ public class ListRoomsDto implements Serializable {
     RoomTypeDto roomType;
     AmenitiesDto amenities;
 
-    public ListRoomsDto(Long roomId, String title, String description, int rent, int securityDeposit, int beds, boolean attachedWashroom, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImageDto> roomImages, FurnishingDto furnishingType, OccupacyTypeDto occupacyType, RoomTypeDto roomType, AmenitiesDto amenities) {
+    public ListRoomsDto(Long roomId, String title, String description, Double rent, Double securityDeposit, int beds, boolean attachedWashroom, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImageDto> roomImages, FurnishingDto furnishingType, OccupacyTypeDto occupacyType, RoomTypeDto roomType, AmenitiesDto amenities) {
         this.roomId = roomId;
         this.title = title;
         this.description = description;
@@ -87,19 +87,19 @@ public class ListRoomsDto implements Serializable {
         this.description = description;
     }
 
-    public int getRent() {
+    public Double getRent() {
         return rent;
     }
 
-    public void setRent(int rent) {
+    public void setRent(Double rent) {
         this.rent = rent;
     }
 
-    public int getSecurityDeposit() {
+    public Double getSecurityDeposit() {
         return securityDeposit;
     }
 
-    public void setSecurityDeposit(int securityDeposit) {
+    public void setSecurityDeposit(Double securityDeposit) {
         this.securityDeposit = securityDeposit;
     }
 
