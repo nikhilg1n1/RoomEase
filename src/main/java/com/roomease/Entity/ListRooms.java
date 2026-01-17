@@ -24,6 +24,8 @@ public class ListRooms {
 
     private String title;
 
+
+
     private String name;
 
     private String description;
@@ -85,6 +87,10 @@ public class ListRooms {
 
     @OneToMany(mappedBy = "listRooms" ,cascade = CascadeType.ALL)
     private List<Booking> booking;
+
+    private Double averageRating;
+
+    private Integer totalRating;
 
     public ListRooms(Long roomId, String title, String description,Double rent, Double securityDeposit, int beds, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImage> roomImages, Furnishing furnishingType, OccupacyType occupacyType, Amenities amenities , String name) {
         this.roomId = roomId;
@@ -278,5 +284,29 @@ public class ListRooms {
 
     public Amenities getAmenities() {
         return amenities;
+    }
+
+    public List<Booking> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<Booking> booking) {
+        this.booking = booking;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Integer getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(Integer totalRating) {
+        this.totalRating = totalRating;
     }
 }
