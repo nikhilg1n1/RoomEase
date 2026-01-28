@@ -1,8 +1,13 @@
 package com.roomease.DTO;
 
+import com.roomease.Entity.UserRole;
 import lombok.Data;
+import org.apache.catalina.User;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 public class UserDataCache implements Serializable {
@@ -50,15 +55,15 @@ public class UserDataCache implements Serializable {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public List<String> getRole() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(List<String> roles) {
+        this.roles = roles;
     }
 
-    private String role;
+    private List<String> roles;
 
 
     public String getName() {
@@ -88,20 +93,20 @@ public class UserDataCache implements Serializable {
     public UserDataCache() {
     }
 
-    public UserDataCache(String id, String name, String email, String picture,String provider,String password,String role) {
+    public UserDataCache(String id, String name, String email, String picture,String provider,String password,List<String> roles) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.provider=provider;
         this.password=password;
-        this.role=role;
+        this.roles=roles;
 
     }
 
-    public UserDataCache(String email , String role, String provider,String picture){
+    public UserDataCache(String email , List<String> roles, String provider,String picture){
         this.email=email;
-        this.role=role;
+        this.roles=roles;
         this.provider=provider;
         this.picture=picture;
     }

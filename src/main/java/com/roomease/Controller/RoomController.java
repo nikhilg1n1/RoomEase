@@ -2,11 +2,11 @@ package com.roomease.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roomease.DTO.ListRoomsDto;
+import com.roomease.DTO.ReviewDto;
 import com.roomease.DTO.RoomCardDto;
 import com.roomease.DTO.RoomFilterDto;
-import com.roomease.Entity.ListRooms;
-import com.roomease.Entity.RoomImage;
-import com.roomease.Repository.RoomImageRepo;
+import com.roomease.Entity.*;
+import com.roomease.Repository.*;
 import com.roomease.Services.ListRoomService;
 import com.roomease.Services.RentRoomService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
 @RestController
@@ -30,14 +31,25 @@ public class RoomController {
 
     private final RoomImageRepo roomImageRepo;
 
+    private final OauthUserRepo oauthUserRepo;
+
+    private final BookingRepo bookingRepo;
+
     private final RentRoomService rentRoomService;
+    private final ReviewRepo reviewRepo;
 
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
+    private final ListRoomRepo listRoomRepo;
 
-    public RoomController(ListRoomService listRoomService, RoomImageRepo roomImageRepo, RentRoomService rentRoomService) {
+    public RoomController(ListRoomService listRoomService, RoomImageRepo roomImageRepo, OauthUserRepo oauthUserRepo, BookingRepo bookingRepo, RentRoomService rentRoomService, ReviewRepo reviewRepo,
+                          ListRoomRepo listRoomRepo) {
         this.listRoomService = listRoomService;
         this.roomImageRepo = roomImageRepo;
+        this.oauthUserRepo = oauthUserRepo;
+        this.bookingRepo = bookingRepo;
         this.rentRoomService = rentRoomService;
+        this.reviewRepo = reviewRepo;
+        this.listRoomRepo = listRoomRepo;
     }
 
     @PostMapping(value = "/saveRooms",consumes = {"multipart/form-data"})
@@ -129,10 +141,49 @@ public class RoomController {
         return rentRoomService.searchRooms(query);
     }
 
-    @PostMapping("/bookings")
-    public ResponseEntity<?> createBooking(@RequestBody Map<String , String> body, Authentication auth){
-        return ResponseEntity.ok().body("Ok hai ji");
+    @PostMapping("/rooms/{roomId}/reviews")
+    public ResponseEntity<?> addReview(@PathVariable Long roomId, @RequestBody ReviewDto dto, Authentication auth){
+        String email = (String) auth.getPrincipal();
+        OauthUser user =oauthUserRepo.findByEmail(email);
+        ListRooms room = listRoomRepo.findListRoomsByRoomId(roomId);
+
+
+//        boolean hasBooked = bookingRepo.existsByOauthUserAndListRoomsAndStatus(user, room ,BookingStatus.INITIATED);
+//        if(!hasBooked){
+//            return ResponseEntity.status(403).body("Only booked user can add rating and review to the rooms");
+//        }
+        Review review = new Review();
+        review.setOauthUser(user);
+        review.setListRooms(room);
+        review.setComment(dto.getComment());
+        review.setRating(dto.getRating());
+        reviewRepo.save(review);
+
+        rentRoomService.updateRoomReview(room);
+
+        return ResponseEntity.ok("Review Added");
     }
 
+    @GetMapping("/rooms/{roomId}/allreviews")
+    public ResponseEntity<?>getRoomReview(@PathVariable Long roomId){
+
+        listRoomRepo.findById(roomId).orElseThrow(()-> new RuntimeException("Room not found"));
+
+        List<ReviewDto> reviews =
+                reviewRepo.findByRoomId(roomId)
+                        .stream()
+                        .map( r ->  new ReviewDto(
+                                r.getId(),
+                                r.getRating(),
+                                r.getComment(),
+                                r.getOauthUser().getName(),
+                                r.getCreatedAt()
+                        )).toList();
+
+        logger.info("Reviews size -> " + reviews.size());
+
+
+        return ResponseEntity.ok(reviews);
+    }
 }
 

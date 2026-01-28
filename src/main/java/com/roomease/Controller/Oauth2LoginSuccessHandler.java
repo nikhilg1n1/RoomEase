@@ -4,6 +4,7 @@ import com.roomease.Auth.JwtUtils;
 import com.roomease.DTO.UserDataCache;
 import com.roomease.Entity.OauthUser;
 import com.roomease.Entity.UserRole;
+import com.roomease.Repository.OauthUserRepo;
 import com.roomease.Repository.RoleRepo;
 import com.roomease.Services.CachedUserService;
 import com.roomease.Services.UserService;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 import static org.slf4j.LoggerFactory.getILoggerFactory;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -41,15 +44,17 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final RedisTemplate<String, Object> template;
     private final CachedUserService cachedUserService;
     private final UserService userService;
+    private final OauthUserRepo oauthUserRepo;
 
 
 
-    public Oauth2LoginSuccessHandler(RoleRepo roleRepo, JwtUtils jwtUtils, RedisTemplate<String, Object> template, CachedUserService cachedUserService, UserService userService) {
+    public Oauth2LoginSuccessHandler(RoleRepo roleRepo, JwtUtils jwtUtils, RedisTemplate<String, Object> template, CachedUserService cachedUserService, UserService userService, OauthUserRepo oauthUserRepo) {
         this.roleRepo = roleRepo;
         this.jwtUtils = jwtUtils;
         this.template = template;
         this.cachedUserService = cachedUserService;
         this.userService = userService;
+        this.oauthUserRepo = oauthUserRepo;
     }
 
     @Override
@@ -67,12 +72,20 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String picture = (String) oAuth2User.getAttributes().get("picture");
         String password = "";
         String provider = (String)oAuth2User.getAttributes().get("provider");
-        UserRole role = roleRepo.findByRole("user").
-                orElseThrow(()-> new RuntimeException("User role is not found"));
+        OauthUser user = oauthUserRepo.findByEmail(email);
+//        UserRole role = roleRepo.findByRole("USER").
+//                orElseThrow(()-> new RuntimeException("User role is not found"));
 
-        UserDataCache userDataCache = new UserDataCache(id, name, email, picture,provider,password,role.getRole());
+
+        List<String> roles = user.getUserRole()
+                .stream()
+                .map(UserRole::getRole)
+                .toList();
+        Set<UserRole> userRoles = Set.of((UserRole) roles);
+
+        UserDataCache userDataCache = new UserDataCache(id, name, email, picture,provider,password,roles);
         cachedUserService.saveUser(userDataCache);
-        OauthUser user = new OauthUser(sub, name, email, picture,provider,password,role);
+        user = new OauthUser(sub, name, email, picture,provider,password,userRoles);
         userService.saveIfFirstLogin(user);
 
         logger.info("Creating Cookie for user {}",name);
