@@ -21,12 +21,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
 @RestController
@@ -86,9 +85,13 @@ public class AuthController {
         if (user == null){
             return ResponseEntity.status(401).body(Map.of("authenticated",false));
         }
-
+//        List<String> roles = user.getRoles()
+//                .stream()
+//                .map(UserRole::getRole)
+//                .toList();
         HashMap<String ,Object> response = new HashMap<>();
         response.put("authenticated",true);
+        response.put("user",user);
         response.put("sub", user.getId());
         response.put("name",user.getName());
         response.put("email",user.getEmail());
@@ -106,12 +109,26 @@ public class AuthController {
             logger.info("Refresh called no cookies present ");
             return  ResponseEntity.status(401).build();
         }
+
         for(Cookie cookie : request.getCookies()){
             logger.info("Received cookie is {}={}",cookie.getName(),cookie.getValue());
 
             if (cookie.getName().equals("refresh_token")){
                 String email = jwtUtils.extractEmail(cookie.getValue());
                 OauthUser user = oauthUserRepo.findByEmail(email);
+
+                UserDataCache userDataCache =
+                        new UserDataCache(
+                                user.getEmail(),
+                                user.getUserRole()
+                                        .stream()
+                                        .map(UserRole::getRole)
+                                        .toList(),
+                                user.getProvider(),
+                                user.getPicture()
+                        );
+
+                cachedUserService.saveUser(userDataCache);
                 String accessToken = jwtUtils.generateAccessToken(user);
                 logger.info("Refresh Token is {}",accessToken);
 
@@ -165,6 +182,7 @@ public class AuthController {
     @PostMapping("/auth/verifyOtp")
     public ResponseEntity<?> verifyOtp(@RequestBody Map<String, String> body) {
         String email = body.get("email");
+        String name = body.get("name");
         String password = body.get("password");
         String otp = body.get("otp");
         logger.info("The user email is {}",email);
@@ -181,13 +199,19 @@ public class AuthController {
 
             user = new OauthUser();
             user.setEmail(email);
+            user.setName(name);
             user.setProvider("Local");
             user.setVerified(true);
             user.setPassword(passwordEncoder.encode(password));
-            UserRole role = roleRepo.findByRole("user").
+            UserRole role = roleRepo.findByRole("USER").
                     orElseThrow(() -> new RuntimeException("User role is not found"));
-            user.setUserRole(role);
-            UserDataCache userDataCache = new UserDataCache(user.getEmail(),user.getUserRole().getRole(), user.getProvider(),user.getPicture());
+            Set<UserRole> userRoles = new HashSet<>();
+            user.setUserRole(userRoles);
+            List<String> roles = user.getUserRole()
+                    .stream()
+                    .map(UserRole::getRole)
+                    .toList();
+            UserDataCache userDataCache = new UserDataCache(user.getEmail(),roles, user.getProvider(),user.getPicture());
             cachedUserService.saveUser(userDataCache);
             oauthUserRepo.save(user);
             logger.info("Normal user saved in DB");
@@ -208,6 +232,10 @@ public class AuthController {
         String email = body.get("email");
         String password = body.get("password");
         OauthUser user = oauthUserRepo.findByEmail(email);
+        List<String> roles = user.getUserRole()
+                .stream()
+                .map(UserRole::getRole)
+                .toList();
 
         if (user == null || !passwordEncoder.matches(password,user.getPassword())){
 
@@ -218,7 +246,11 @@ public class AuthController {
         String accessToken = jwtUtils.generateAccessToken(user);
         String refreshToken = jwtUtils.generateRefreshToken(user);
 
-        UserDataCache userDataCache = new UserDataCache(user.getEmail(),user.getUserRole().getRole(), user.getProvider(),user.getPicture());
+        List<String> role = jwtUtils.extractRole(accessToken);
+//        UserRole role = roleRepo.findByRole("USER").
+//                orElseThrow(()-> new RuntimeException("User role is not found"));
+
+        UserDataCache userDataCache = new UserDataCache(user.getEmail(),roles, user.getProvider(),user.getPicture());
         cachedUserService.saveUser(userDataCache);
 
         ResponseCookie cookie = ResponseCookie.from("refresh_token",refreshToken)
@@ -234,8 +266,9 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE,cookie.toString())
                 .body(Map.of(
                         "authenticated",true,
-//                        "access_token",accessToken,
+                        "access_token",accessToken,
                         "user",userDataCache,
+                        "roles", role,
                         "email",user.getEmail()
                         ));
 
@@ -255,9 +288,9 @@ public class AuthController {
         }else {
             return ResponseEntity.status(401).body("User password is not changed");
         }
-
-
     }
+
+
 
 
 }

@@ -43,6 +43,8 @@ public class SecurityConfig {
                                 "/v1/users/login",
                                 "/v1/users/forgotpass"
                         ).permitAll()
+                        .requestMatchers("/v1/saveRooms").hasRole("OWNER")
+
                          .anyRequest().authenticated()
 
                 )

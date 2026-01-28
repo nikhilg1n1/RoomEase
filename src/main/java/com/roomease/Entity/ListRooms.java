@@ -24,8 +24,6 @@ public class ListRooms {
 
     private String title;
 
-
-
     private String name;
 
     private String description;
@@ -90,7 +88,20 @@ public class ListRooms {
 
     private Double averageRating;
 
+
     private Integer totalRating;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private OauthUser user;
+
+    public OauthUser getUser() {
+        return user;
+    }
+
+    public void setUser(OauthUser owner) {
+        this.user = owner;
+    }
 
     public ListRooms(Long roomId, String title, String description,Double rent, Double securityDeposit, int beds, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImage> roomImages, Furnishing furnishingType, OccupacyType occupacyType, Amenities amenities , String name) {
         this.roomId = roomId;

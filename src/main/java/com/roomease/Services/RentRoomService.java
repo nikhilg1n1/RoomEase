@@ -3,19 +3,24 @@ package com.roomease.Services;
 import com.roomease.DTO.RoomCardDto;
 import com.roomease.DTO.RoomFilterDto;
 import com.roomease.Entity.ListRooms;
+import com.roomease.Entity.Review;
 import com.roomease.Repository.ListRoomRepo;
+import com.roomease.Repository.ReviewRepo;
 import com.roomease.Repository.RoomSpecification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class RentRoomService {
 
     private final ListRoomRepo listRoomRepo;
+    private final ReviewRepo reviewRepo;
 
-    public RentRoomService(ListRoomRepo listRoomRepo) {
+    public RentRoomService(ListRoomRepo listRoomRepo, ReviewRepo reviewRepo) {
         this.listRoomRepo = listRoomRepo;
+        this.reviewRepo = reviewRepo;
     }
 
     public List<RoomCardDto> getDataForRoomCard(){
@@ -69,5 +74,18 @@ public class RentRoomService {
         ).toList();
     }
 
+    public void updateRoomReview(ListRooms rooms){
+        List<Review> review = reviewRepo.findByListRooms(rooms);
+
+        double avg = review.stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0);
+
+        rooms.setAverageRating(avg);
+        rooms.setTotalRating(review.size());
+
+        listRoomRepo.save(rooms);
+    }
 
 }

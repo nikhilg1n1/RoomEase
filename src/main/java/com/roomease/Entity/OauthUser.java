@@ -1,13 +1,16 @@
 package com.roomease.Entity;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 
 @Entity
 
-public class OauthUser {
+public class OauthUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,13 +27,15 @@ public class OauthUser {
 
     private boolean verified;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_role_id")
-    private UserRole userRole;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+    joinColumns = @JoinColumn(name="user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserRole> userRole = new HashSet<>();
     @OneToMany(mappedBy = "oauthUser",cascade = CascadeType.ALL)
     private List<Booking> booking;
 
-    public OauthUser(Long id, String sub, String name, String email, String picture, String provider, String password, boolean verified, UserRole userRole) {
+    public OauthUser(Long id, String sub, String name, String email, String picture, String provider, String password, boolean verified, Set<UserRole> userRole) {
         this.id = id;
         this.sub = sub;
         this.name = name;
@@ -42,16 +47,16 @@ public class OauthUser {
         this.userRole = userRole;
     }
 
-    public UserRole getUserRole() {
+    public Set<UserRole> getUserRole() {
         return userRole;
     }
 
-    public void setUserRole(UserRole userRole) {
+    public void setUserRole(Set<UserRole> userRole) {
         this.userRole = userRole;
     }
 
 
-    public OauthUser(String sub  ,String name, String email, String picture,String provider,String password,UserRole userRole) {
+    public OauthUser(String sub  ,String name, String email, String picture,String provider,String password,Set<UserRole> userRole) {
         this.sub = sub;
         this.name = name;
         this.email = email;
@@ -117,8 +122,20 @@ public class OauthUser {
         this.provider = provider;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return userRole.stream()
+                .map(r-> new SimpleGrantedAuthority("ROLE_"+r.getRole())).toList();
+
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     public void setPassword(String password) {
