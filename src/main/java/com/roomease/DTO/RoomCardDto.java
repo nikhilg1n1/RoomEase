@@ -13,15 +13,18 @@ public class RoomCardDto implements Serializable {
 
     private String city;
 
+    private String address;
+
     private Long imageId;
 
 
 
-    public RoomCardDto(Long roomId, String title, Double rent, String city, Long imageId) {
+    public RoomCardDto(Long roomId, String title, Double rent, String city,String address, Long imageId) {
         this.roomId = roomId;
         this.title = title;
         this.rent = rent;
         this.city = city;
+        this.address = address;
         this.imageId = imageId;
     }
 
@@ -72,4 +75,11 @@ public class RoomCardDto implements Serializable {
         this.imageId = imageId;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

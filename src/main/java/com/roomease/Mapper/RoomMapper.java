@@ -1,11 +1,12 @@
-package com.roomease.DTO;
+package com.roomease.Mapper;
 
 import com.roomease.DTO.*;
 import com.roomease.Entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+uses = {BookingMapper.class})
 public interface RoomMapper {
 //
 //    @Mapping(target = "roomImages", source = "roomImages", ignore = true)
@@ -13,7 +14,9 @@ public interface RoomMapper {
 //    @Mapping(target = "furnishingType", source = "furnishingType",ignore = true)
 //    @Mapping(target = "occupacyType", source = "occupacyType",ignore = true)
 //    @Mapping(target = "roomType", source = "roomType",ignore = true)
-    ListRoomsDto toDto(ListRooms room);
+@Mapping(target = "booking", ignore = true)
+
+ListRoomsDto toDto(ListRooms room);
 
 //    @Mapping(target = "listRooms", ignore = true)// prevent infinite loop
 //@Mapping(target = "roomImage", source = "roomImage")
@@ -31,4 +34,8 @@ AmenitiesDto toDto(Amenities amenities);
 
 //    @Mapping(target = "listRooms", ignore = true)
     FurnishingDto toDto(Furnishing furnishing);
+
+//    OauthUserDto toDto(OauthUser user);
+
+//    BookingDto toDto(Booking booking);
 }

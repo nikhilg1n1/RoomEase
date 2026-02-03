@@ -1,8 +1,9 @@
 package com.roomease.Services;
 
 import com.roomease.DTO.ListRoomsDto;
-import com.roomease.DTO.RoomMapper;
+import com.roomease.Mapper.RoomMapper;
 import com.roomease.Entity.ListRooms;
+import com.roomease.Entity.OauthUser;
 import com.roomease.Repository.ListRoomRepo;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,13 @@ public class ListRoomService {
 
     public List<ListRoomsDto> getAllRooms() {
         return listRoomRepo.findAll()
+                .stream()
+                .map(mapper::toDto)   // Use MapStruct
+                .toList();
+    }
+
+    public List<ListRoomsDto> getAllRoomsForOwner(OauthUser user) {
+        return listRoomRepo.findListRoomsByUser(user)
                 .stream()
                 .map(mapper::toDto)   // Use MapStruct
                 .toList();

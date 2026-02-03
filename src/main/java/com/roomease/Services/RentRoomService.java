@@ -33,6 +33,7 @@ public class RentRoomService {
                         room.getTitle(),
                         room.getRent(),
                         room.getCity(),
+                        room.getAddress(),
                         room.getRoomImages().isEmpty()?
                                 null : room.getRoomImages().get(0).getId()
                 )
@@ -50,6 +51,7 @@ public class RentRoomService {
                         room.getTitle(),
                         room.getRent(),
                         room.getCity(),
+                        room.getAddress(),
                         room.getRoomImages().isEmpty() ?
                                 null : room.getRoomImages().get(0).getId()
 
@@ -68,6 +70,7 @@ public class RentRoomService {
                         rooms.getTitle(),
                         rooms.getRent(),
                         rooms.getCity(),
+                        rooms.getAddress(),
                         rooms.getRoomImages().isEmpty()?
                                 null : rooms.getRoomImages().get(0).getId()
                 )

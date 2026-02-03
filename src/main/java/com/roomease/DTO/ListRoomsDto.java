@@ -1,10 +1,6 @@
 package com.roomease.DTO;
 
-import com.roomease.Entity.Amenities;
-import com.roomease.Entity.Furnishing;
-import com.roomease.Entity.OccupacyType;
-import com.roomease.Entity.RoomImage;
-import com.roomease.Entity.RoomType;
+import com.roomease.Entity.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -35,6 +31,13 @@ public class ListRoomsDto implements Serializable {
     OccupacyTypeDto occupacyType;
     RoomTypeDto roomType;
     AmenitiesDto amenities;
+
+    OauthUser user;
+
+    private String name;
+    private List<BookingDto> booking;
+    private Double averageRating;
+    private Integer totalRating;
 
     public ListRoomsDto(Long roomId, String title, String description, Double rent, Double securityDeposit, int beds, boolean attachedWashroom, boolean balcony, String address, String city, String landmark, String phoneNumber, String alternateNumber, String email, LocalDate availableDate, List<RoomImageDto> roomImages, FurnishingDto furnishingType, OccupacyTypeDto occupacyType, RoomTypeDto roomType, AmenitiesDto amenities) {
         this.roomId = roomId;
@@ -221,5 +224,44 @@ public class ListRoomsDto implements Serializable {
 
     public void setAmenities(AmenitiesDto amenities) {
         this.amenities = amenities;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<BookingDto> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<BookingDto> booking) {
+        this.booking = booking;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Integer getTotalRating() {
+        return totalRating;
+    }
+
+    public void setTotalRating(Integer totalRating) {
+        this.totalRating = totalRating;
+    }
+    public OauthUser getUser() {
+        return user;
+    }
+
+    public void setUser(OauthUser user) {
+        this.user = user;
     }
 }

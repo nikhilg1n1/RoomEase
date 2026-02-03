@@ -74,7 +74,7 @@ public class RoomController {
                     System.out.println("Image received: " + images.getOriginalFilename());
                 }
             }
-
+//            listRooms.setUser();
             listRoomService.saveListedRoom(listRooms);
             System.out.println("Title: " + listRooms.getTitle());
             System.out.println("Rent: " + listRooms.getRent());

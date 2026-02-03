@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -81,7 +82,8 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .stream()
                 .map(UserRole::getRole)
                 .toList();
-        Set<UserRole> userRoles = Set.of((UserRole) roles);
+        Set<UserRole> userRoles = new HashSet<>();
+
 
         UserDataCache userDataCache = new UserDataCache(id, name, email, picture,provider,password,roles);
         cachedUserService.saveUser(userDataCache);
