@@ -167,6 +167,11 @@ public class AuthController {
 //        try{
 
             String email = req.get("email");
+            OauthUser user = oauthUserRepo.findByEmail(email);
+            if(user != null){
+                return ResponseEntity.badRequest().body("User already exists");
+
+            }
             String otp = otpService.generateOtp(email);
             emailService.sendOtp(email,otp);
 //            System.out.println("otp : " + otp);
@@ -195,6 +200,8 @@ public class AuthController {
 //        logger.info("Verify and storing user in db -> " +
 
         OauthUser user = oauthUserRepo.findByEmail(email);
+
+
         if(user == null) {
 
             user = new OauthUser();

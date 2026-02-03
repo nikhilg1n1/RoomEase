@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 public class BookingDto implements Serializable {
     Long id;
     OauthUserDto oauthUser;
-    ListRoomsDto listRooms;
+        ListRoomsDto listRooms;
 
-
+    String name;
     Long roomId;
     Double rent;
     BookingStatus status;
@@ -29,13 +29,13 @@ public class BookingDto implements Serializable {
         this.id = id;
     }
 
-    public OauthUserDto getOauthUser() {
-        return oauthUser;
-    }
-
-    public void setOauthUser(OauthUserDto oauthUser) {
-        this.oauthUser = oauthUser;
-    }
+//    public OauthUserDto getOauthUser() {
+//        return oauthUser;
+//    }
+//
+//    public void setOauthUser(OauthUserDto oauthUser) {
+//        this.oauthUser = oauthUser;
+//    }
 
     public ListRoomsDto getListRooms() {
         return listRooms;
@@ -75,5 +75,13 @@ public class BookingDto implements Serializable {
 
     public void setRoomId(Long roomId) {
         this.roomId = roomId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
