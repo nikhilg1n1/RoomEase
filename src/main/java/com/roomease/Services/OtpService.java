@@ -37,6 +37,11 @@ public class OtpService {
         String key = "otp :"+email;
         String storedOtp = redisTemplate.opsForValue().get(key);
 
+        if(storedOtp == null){
+            logger.info("Otp is not found or expired for this mail : {}", email);
+            return false;
+
+        }
         logger.info("Stored Otp is ->" + storedOtp);
 
         if(storedOtp.equals(otp)){

@@ -1,9 +1,7 @@
 package com.roomease.Controller;
 
-import com.roomease.Auth.JwtUtils;
 import com.roomease.DTO.ListRoomsDto;
 import com.roomease.DTO.UserDataCache;
-import com.roomease.Entity.ListRooms;
 import com.roomease.Entity.OauthUser;
 import com.roomease.Entity.UserRole;
 import com.roomease.Repository.ListRoomRepo;
@@ -16,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,33 +50,48 @@ public class RoomOwnerController {
     @PostMapping("/role/request-owner")
     public ResponseEntity<?> addRole(Authentication auth){
         String email = (String) auth.getPrincipal();
+//        OAuth2User oAuth2User = (OAuth2User) auth.getPrincipal();
+
 
         OauthUser user = oauthUserRepo.findByEmail(email);
         if(user == null){
             return ResponseEntity.status(401).body("user not found");
         }
+        if(user.getProvider() == null){
+            user.setProvider("Local");
+        }
 
         UserRole role = roleRepo.findByRole("OWNER").
                 orElseThrow(() -> new RuntimeException("OWNER role is not found"));
+
+        boolean isOwner = user.getUserRole().stream()
+                .anyMatch(r->"OWNER".equals(r.getRole()));
+
+        if(isOwner){
+            logger.info("User is Already Owner");
+            return ResponseEntity.badRequest().body("User already an Owner");
+        }
 
 
         Set<UserRole> roles = new HashSet<>(user.getUserRole());
         roles.add(role);
         user.setUserRole(roles);
 
-        System.out.println("The role is ->" + user.getUserRole());
+        System.out.println("The role is ->" + user.getUserRole().stream().toList());
 
-        boolean isOwner = roles.stream()
-                        .anyMatch(r->"OWNER".equals(r.getRole()));
-        if(isOwner){
-            return ResponseEntity.badRequest().body("User already an Owner");
-        }
+//        boolean isOwner = roles.stream()
+//                        .anyMatch(r->"OWNER".equals(r.getRole()));
+//
+//        if(isOwner){
+//            logger.info("User is Already Owner");
+//            return ResponseEntity.badRequest().body("User already an Owner");
+//        }
         List<String> userRoles = user.getUserRole()
                 .stream()
                 .map(UserRole::getRole)
                 .toList();
 
-        roles.add(role);
+//        roles.add(role);
         oauthUserRepo.save(user);
         cachedUserService.saveUser(
                 new UserDataCache(

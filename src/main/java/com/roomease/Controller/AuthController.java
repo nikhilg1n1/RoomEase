@@ -21,7 +21,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,6 +94,7 @@ public class AuthController {
         response.put("sub", user.getId());
         response.put("name",user.getName());
         response.put("email",user.getEmail());
+        response.put("provider",user.getProvider());
         response.put("picture",user.getPicture());
         response.put("role",user.getRole());
 

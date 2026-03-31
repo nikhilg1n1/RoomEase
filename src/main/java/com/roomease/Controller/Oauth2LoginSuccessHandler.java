@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseCookie;
@@ -28,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.slf4j.LoggerFactory.getILoggerFactory;
 import static org.slf4j.LoggerFactory.getLogger;
 @Component
 @Slf4j
@@ -72,32 +70,46 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String name = (String) oAuth2User.getAttributes().get("name");
         String picture = (String) oAuth2User.getAttributes().get("picture");
         String password = "";
-        String provider = (String)oAuth2User.getAttributes().get("provider");
+        String provider = "GOOGLE";
+
         OauthUser user = oauthUserRepo.findByEmail(email);
 //        UserRole role = roleRepo.findByRole("USER").
 //                orElseThrow(()-> new RuntimeException("User role is not found"));
 
+        if(user == null){
+            logger.info("New User login through Google");
+            UserRole defaultRole = roleRepo.findByRole("USER")
+                    .orElseThrow(() -> new RuntimeException("USER role not found"));
+
+            Set<UserRole> userRoles = new HashSet<>();
+            userRoles.add(defaultRole);
+            OauthUser newUser = new OauthUser();
+            newUser.setSub(sub);
+            newUser.setName(name);
+            newUser.setEmail(email);
+            newUser.setPicture(picture);
+            newUser.setProvider(provider);
+            newUser.setPassword("");
+            newUser.setUserRole(userRoles);
+
+            userService.saveIfFirstLogin(newUser);
+            user = newUser;
+        }
 
         List<String> roles = user.getUserRole()
                 .stream()
                 .map(UserRole::getRole)
                 .toList();
-        Set<UserRole> userRoles = new HashSet<>();
 
+//        Set<UserRole> userRoles = new HashSet<>();
 
         UserDataCache userDataCache = new UserDataCache(id, name, email, picture,provider,password,roles);
         cachedUserService.saveUser(userDataCache);
-        user = new OauthUser(sub, name, email, picture,provider,password,userRoles);
-        userService.saveIfFirstLogin(user);
+        logger.info("Provider is - > " + provider);
 
         logger.info("Creating Cookie for user {}",name);
-
-
         String accessToken = jwtUtils.generateAccessToken(user);
-
         logger.info("Access Token is {}", accessToken);
-
-
         String refreshToken = jwtUtils.generateRefreshToken(user);
 
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)

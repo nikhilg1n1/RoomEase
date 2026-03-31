@@ -4,7 +4,6 @@ import com.roomease.Entity.OauthUser;
 import com.roomease.Repository.OauthUserRepo;
 import com.roomease.Repository.UserInfoRepo;
 import jakarta.transaction.Transactional;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +23,7 @@ public class UserService {
         OauthUser user =  oauthUserRepo.findByEmail(oauthUser.getEmail());
         if(user == null){
             System.out.println("Saving first-time Oauth user");
-            return oauthUserRepo.save(user);
+            return oauthUserRepo.save(oauthUser);
         }
         System.out.println("User already exists in Database");
         return user;

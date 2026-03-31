@@ -1,6 +1,5 @@
 package com.roomease.Entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -45,8 +44,8 @@ public class Review {
         return oauthUser;
     }
 
-    public void setOauthUser(OauthUser oauthUser) {
-        this.oauthUser = oauthUser;
+    public void setOauthUser(OauthUser oauthUserDto) {
+        this.oauthUser = oauthUserDto;
     }
 
     public Long getId() {

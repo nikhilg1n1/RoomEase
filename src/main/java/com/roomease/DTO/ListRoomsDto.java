@@ -1,7 +1,5 @@
 package com.roomease.DTO;
 
-import com.roomease.Entity.*;
-import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -32,7 +30,7 @@ public class ListRoomsDto implements Serializable {
     RoomTypeDto roomType;
     AmenitiesDto amenities;
 
-    OauthUser user;
+    OauthUserDto user;
 
     private String name;
     private List<BookingDto> booking;
@@ -257,11 +255,11 @@ public class ListRoomsDto implements Serializable {
     public void setTotalRating(Integer totalRating) {
         this.totalRating = totalRating;
     }
-    public OauthUser getUser() {
+    public OauthUserDto getUser() {
         return user;
     }
 
-    public void setUser(OauthUser user) {
+    public void setUser(OauthUserDto user) {
         this.user = user;
     }
 }

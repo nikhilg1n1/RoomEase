@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
  */
 public class BookingDto implements Serializable {
     Long id;
-    OauthUserDto oauthUser;
-        ListRoomsDto listRooms;
+//    OauthUserDto oauthUser;
+    ListRoomsDto listRooms;
 
     String name;
     Long roomId;
