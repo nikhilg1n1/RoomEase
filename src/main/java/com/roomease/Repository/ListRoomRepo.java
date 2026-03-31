@@ -1,7 +1,5 @@
 package com.roomease.Repository;
 
-import com.roomease.DTO.ListRoomsDto;
-import com.roomease.DTO.RoomCardDto;
 import com.roomease.Entity.ListRooms;
 import com.roomease.Entity.OauthUser;
 import org.springframework.data.jpa.repository.JpaRepository;

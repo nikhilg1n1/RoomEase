@@ -35,6 +35,8 @@ public class RoomCardDto implements Serializable {
         this.imageId = imageId;
     }
 
+
+
     public Long getRoomId() {
         return roomId;
     }

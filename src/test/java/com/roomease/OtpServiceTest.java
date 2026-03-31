@@ -70,7 +70,7 @@ public class OtpServiceTest {
 
     // Testing with wrong otp
     @Test
-    void verifyOtp_withExpiredOtp_shouldReturnFalse(){
+    void verifyOtp_withWrongOtp_shouldReturnFalse(){
         String mail = "testMail@gmail.com";
 
         when(valueOperations.get("otp :" +mail)).thenReturn("123456");
@@ -90,5 +90,16 @@ public class OtpServiceTest {
         otpService.verifyOtp(mail,otp);
 
         verify(redisTemplate,times(1)).delete(key);
+    }
+
+    //Test for expired Otp or null from redis
+    @Test
+    void verifyOtp_withExpiredOtp_shouldReturnFalse(){
+        String mail = "testMail@gmail.com";
+
+        when(valueOperations.get("otp :" +mail)).thenReturn(null);
+        boolean result = otpService.verifyOtp(mail,"123456");
+        assertFalse(result);
+
     }
 }

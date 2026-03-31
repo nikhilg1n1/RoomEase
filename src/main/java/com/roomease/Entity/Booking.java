@@ -10,8 +10,6 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    private String name;
-
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,9 +33,8 @@ public class Booking {
     @Column(length = 30)
     private BookingStatus status;
 
-    public Booking(Long id, String name, OauthUser oauthUser, ListRooms listRooms, Double rent, BookingStatus status, LocalDateTime createdAt) {
+    public Booking(Long id, OauthUser oauthUser, ListRooms listRooms, Double rent, BookingStatus status, LocalDateTime createdAt) {
         this.id = id;
-        this.name=name;
         this.oauthUser = oauthUser;
         this.listRooms = listRooms;
         this.rent = rent;
@@ -117,14 +114,6 @@ public class Booking {
 
     public void setBookingToken(Double bookingToken) {
         this.bookingToken = bookingToken;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
 

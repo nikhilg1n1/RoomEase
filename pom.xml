@@ -135,12 +135,6 @@
 		</dependency>
 
 		<!-- Already in your pom.xml — just confirm -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<!-- Includes: JUnit 5, Mockito, AssertJ, Hamcrest -->
-		</dependency>
 		<!-- Source: https://mvnrepository.com/artifact/org.mockito/mockito-core -->
 		<dependency>
 			<groupId>org.mockito</groupId>

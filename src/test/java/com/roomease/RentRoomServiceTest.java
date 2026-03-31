@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,4 +65,37 @@ public class RentRoomServiceTest {
         List<RoomCardDto> result = rentRoomService.getDataForRoomCard();
         assertNull(result.get(0).getImageId());
     }
+    
+    //Test Db returns empty list
+    @Test
+    void getDataForRoomCard_noRooms_shouldReturnEmptyList(){
+        when(listRoomRepo.findAll()).thenReturn(Collections.emptyList());
+
+        List<RoomCardDto> result = rentRoomService.getDataForRoomCard();
+        assertTrue(result.isEmpty());
+    }
+
+    //Test to search the rooms by the city
+    @Test
+    void searchRooms_shouldReturnMatchingRooms(){
+        List<ListRooms> searchRooms = List.of(
+                createFakeRoom(1L,"Room for Boys",5000.0,"Pune",true)
+        );
+
+        when(listRoomRepo.searchByCityOrAddress("Pune")).thenReturn(searchRooms);
+        List<RoomCardDto> result = rentRoomService.searchRooms("Pune");
+        assertEquals(1,result.size());
+        assertEquals("Pune",result.get(0).getCity());
+    }
+
+    //Test the room with invalid city or Address
+    @Test
+    void searchRooms_noMatch_ShouldReturnEmptyList(){
+        when(listRoomRepo.searchByCityOrAddress("xyz")).thenReturn(Collections.emptyList());
+
+        List<RoomCardDto> result = rentRoomService.searchRooms("xyz");
+
+        assertTrue(result.isEmpty());
+    }
+
 }

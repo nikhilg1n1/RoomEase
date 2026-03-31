@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring",
-uses = {BookingMapper.class})
+uses = {BookingMapper.class , OauthUserMapper.class})
 public interface RoomMapper {
 //
 //    @Mapping(target = "roomImages", source = "roomImages", ignore = true)

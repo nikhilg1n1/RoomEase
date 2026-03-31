@@ -1,7 +1,6 @@
 package com.roomease.Controller;
 
 import com.razorpay.Order;
-import com.razorpay.RazorpayClient;
 import com.roomease.DTO.BookingDto;
 import com.roomease.Entity.Booking;
 import com.roomease.Entity.BookingStatus;
@@ -15,7 +14,6 @@ import com.roomease.Services.RazorPayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Map;
 @RestController
 @RequestMapping("/v1")

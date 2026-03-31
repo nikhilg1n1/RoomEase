@@ -51,10 +51,9 @@ public class JwtUtils {
         }catch (Exception e){
             logger.info("Error is occurred here ");
             logger.error("Validated token is failing "+e.getMessage());
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return false;
-
     }
     public  String generateRefreshToken(OauthUser user){
         return Jwts.builder()
@@ -66,7 +65,6 @@ public class JwtUtils {
                 .signWith(key,SignatureAlgorithm.HS256)
                 .compact();
     }
-
     public  String extractEmail(String token){
         try{
             return parseToken(token).getSubject();
@@ -76,7 +74,6 @@ public class JwtUtils {
             return null;
         }
     }
-
     public  List<String> extractRole(String token){
         try{
             return parseToken(token).get("roles", List.class);
