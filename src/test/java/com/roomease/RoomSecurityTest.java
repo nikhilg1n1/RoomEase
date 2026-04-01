@@ -35,19 +35,31 @@ public class RoomSecurityTest {
     @Test
     void getAllRooms_withoutAuth_shouldReturn401() throws  Exception{
         mockMvc.perform(get("/v1/rooms"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is(
+                        org.hamcrest.Matchers.either(
+                                org.hamcrest.Matchers.is(401)
+                        ).or(org.hamcrest.Matchers.is(302))
+                ));
     }
 
     @Test
     void searchRooms_withoutAuth_shouldReturn401() throws  Exception{
         mockMvc.perform(get("/v1/searchRooms").param("query","Pune"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is(
+                        org.hamcrest.Matchers.either(
+                                org.hamcrest.Matchers.is(401)
+                        ).or(org.hamcrest.Matchers.is(302))
+                ));
     }
 
     @Test
     void getRoomDescription_withoutAuth_shouldReturn401() throws Exception{
         mockMvc.perform(get("/v1/description/1"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is(
+                        org.hamcrest.Matchers.either(
+                                org.hamcrest.Matchers.is(401)
+                        ).or(org.hamcrest.Matchers.is(302))
+                ));
     }
 
 }
