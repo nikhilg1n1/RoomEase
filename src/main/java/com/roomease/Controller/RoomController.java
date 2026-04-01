@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
 @RestController
@@ -131,7 +129,7 @@ public class RoomController {
         ListRoomsDto room = listRoomService.getRoomDescription(id);
 
         if(room == null){
-            return  ResponseEntity.status(404).body("Room not found");
+            return  ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(room);
     }
