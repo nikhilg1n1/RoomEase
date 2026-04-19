@@ -1,12 +1,28 @@
 name: RoomEase CI
 on:
   push:
-    branches: ["underdevelopment"]
+    branches: ["master", "underdevelopment"]
   pull_request:
     branches: ["master"]
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      RAZORPAY_KEY: ${{ secrets.RAZORPAY_KEY }}
+      RAZORPAY_SECRET: ${{ secrets.RAZORPAY_SECRET }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
+
 
     steps:
       - name: Checkout code
