@@ -5,7 +5,7 @@ COPY . .
 
 RUN mvn clean package
 #--Run Stage ---
-FROM eclipse-temurin-17
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
