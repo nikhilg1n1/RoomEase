@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 public class JwtUtils {
-    @Value("${secret}")
+    @Value("${JWT_SECRET}")
     private String secret;
 
 
