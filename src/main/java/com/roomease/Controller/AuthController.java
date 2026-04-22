@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(origins = "https://roomease-iota.vercel.app/",allowCredentials = "true")
 @RestController
 @RequestMapping("/v1/users")
 public class AuthController {

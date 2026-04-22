@@ -63,9 +63,9 @@ public class SecurityConfig {
 //                        .tokenValiditySeconds(15*24*60*60))
                 .oauth2Login(oauth -> oauth
                         .successHandler(oauth2LoginSuccessHandler)
-                        .loginPage("http://localhost:5173/login")
+                        .loginPage("https://roomease-iota.vercel.app//login")
                         .failureHandler(((request, response, exception) -> {
-                           response.sendRedirect("http://localhost:5173/error/oauth");
+                           response.sendRedirect("https://roomease-iota.vercel.app//error/oauth");
                         }))
 //                        .defaultSuccessUrl("http://localhost:5173/",true)
 
@@ -95,7 +95,7 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 WebMvcConfigurer.super.addCorsMappings(registry);
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins("https://roomease-iota.vercel.app/")
                         .allowedMethods("GET","POST","PUT","UPDATE","DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .exposedHeaders("Set-Cookie","Authorization")

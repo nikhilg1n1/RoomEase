@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true")
+@CrossOrigin(origins = "https://roomease-iota.vercel.app/",allowCredentials = "true")
 @RestController
 @RequestMapping("/v1")
 public class RoomController {
