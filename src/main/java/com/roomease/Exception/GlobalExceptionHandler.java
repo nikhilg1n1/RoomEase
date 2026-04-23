@@ -12,17 +12,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchFieldError.class)
     public void handleNotFound(HttpServletResponse response) throws IOException{
-        response.sendRedirect("http://localhost:5173/error/404");
+        response.sendRedirect("https://roomease-iota.vercel.app/error/404");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleBadRequest(HttpServletResponse response) throws  IOException{
-        response.sendRedirect("http://localhost:5173/error/400");
+        response.sendRedirect("https://roomease-iota.vercel.app/error/400");
     }
 
     @ExceptionHandler(RedisConnectionFailureException.class)
     public void handleServerError(HttpServletResponse response) throws  IOException{
-        response.sendRedirect("http://localhost:5173/error/500");
+        response.sendRedirect("https://roomease-iota.vercel.app/error/500");
     }
 
 
