@@ -5,6 +5,7 @@ import com.roomease.Controller.Oauth2LoginSuccessHandler;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -50,7 +51,7 @@ public class SecurityConfig {
                 )
                 .csrf(AbstractHttpConfigurer::disable)
 //                .cors(AbstractHttpConfigurer::disable)
-                .cors(cors ->{})
+                .cors(Customizer.withDefaults())
 //                .oauth2Login(auth -> auth
 ////                        .loginPage("http://localhost:5173/login")
 //                        .defaultSuccessUrl("http://localhost:5173/",true)
@@ -96,7 +97,7 @@ public class SecurityConfig {
                 WebMvcConfigurer.super.addCorsMappings(registry);
                 registry.addMapping("/**")
                         .allowedOrigins("https://roomease-iota.vercel.app")
-                        .allowedMethods("GET","POST","PUT","UPDATE","DELETE","OPTIONS")
+                        .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .exposedHeaders("Set-Cookie","Authorization")
                         .allowCredentials(true);
