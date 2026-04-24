@@ -30,7 +30,7 @@ import java.util.Set;
 import static org.slf4j.LoggerFactory.getLogger;
 @Component
 @Slf4j
-@CrossOrigin(origins = "https://roomease-iota.vercel.app/",allowCredentials = "true")
+@CrossOrigin(origins = "https://roomease-iota.vercel.app",allowCredentials = "true")
 public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Value("${JWT_SECRET}")
@@ -122,7 +122,7 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         logger.info("Cookies are -> {}",cookie);
         response.addHeader("Set-Cookie",cookie.toString());
 
-        response.sendRedirect("https://roomease-iota.vercel.app/");
+        response.sendRedirect("https://roomease-iota.vercel.app");
         return;
 
     }
