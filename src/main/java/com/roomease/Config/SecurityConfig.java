@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 "/v1/users/sendOtp",
                                 "/v1/users/auth/verifyOtp",
                                 "/v1/users/login",
+                                "/error/**",
                                 "/v1/users/forgotpass"
                         ).permitAll()
                         .requestMatchers("/v1/saveRooms").hasRole("OWNER")
