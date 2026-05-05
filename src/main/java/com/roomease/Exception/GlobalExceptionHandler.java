@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RedisConnectionFailureException.class)
     public ResponseEntity<?> handleServerError(RedisConnectionFailureException ex){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error","Redis Connection faliure"));
+                .body(Map.of("error",ex));
     }
 
     @ExceptionHandler(Exception.class)
